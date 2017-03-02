@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>1的代码是没什么问题，但是性能偏差。如果直接将函数绑定在 scroll 事件上，当页面滚动时，函数会被高频触发，这非常影响浏览器的性能。我粗略地估计一下，当简单地滚动一下页面，函数至少触发了十来次，这显然是十分没必要的。
+所以在做事件绑定的时候，可以对 lazyload 函数进行函数节流（throttle）与函数去抖（debounce）处理。以实现延迟加载.</title>
+<style>
+
+/*	简单说来：
+
+IntersectionObserver API
+http://www.ruanyifeng.com/blog/2016/11/intersectionobserver_api.html
+*/
+	img {
+		display: block;
+		margin-bottom: 50px;
+		height: 200px;
+	}
+
+</style>
+</head>
+
+<body>
+<img src="images/loading.gif" data-src="images/1.jpg">
+<img src="images/loading.gif" data-src="images/2.jpg">
+<img src="images/loading.gif" data-src="images/3.jpg">
+<img src="images/loading.gif" data-src="images/4.jpg">
+<img src="images/loading.gif" data-src="images/5.jpg">
+<img src="images/loading.gif" data-src="images/6.jpg">
+<img src="images/loading.gif" data-src="images/7.jpg">
+<img src="images/loading.gif" data-src="images/8.jpg">
+<img src="images/loading.gif" data-src="images/9.jpg">
+<img src="images/loading.gif" data-src="images/10.jpg">
+<img src="images/loading.gif" data-src="images/11.jpg">
+<img src="images/loading.gif" data-src="images/12.jpg">
+<img src="images/loading.gif" data-src="images/13.jpg">
+<img src="images/loading.gif" data-src="images/14.jpg">
+<img src="images/loading.gif" data-src="images/15.jpg">
+<img src="images/loading.gif" data-src="images/16.jpg">
+<img src="images/loading.gif" data-src="images/17.jpg">
+<img src="images/loading.gif" data-src="images/18.jpg">
+<img src="images/loading.gif" data-src="images/19.jpg">
+<img src="images/loading.gif" data-src="images/20.jpg">
+<img src="images/loading.gif" data-src="images/21.jpg">
+
+<script>
+	function query(selector) {
+	    return Array.from(document.querySelectorAll(selector));
+	}
+	var io = new IntersectionObserver(function(items) {
+	    items.forEach(function(item) {
+		var target = item.target;
+		if(target.getAttribute('src') == 'images/loading.gif') {
+		    target.src = target.getAttribute('data-src');
+		}
+	    })
+	});
+	query('img').forEach(function(item) {
+	    io.observe(item);
+	});
+    </script>
+</body>
+</html>
